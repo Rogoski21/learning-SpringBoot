@@ -1,9 +1,8 @@
 package guru.springframework.spring5webapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Publisher {
@@ -12,20 +11,58 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
     private String addressLine1;
     private String city;
     private String state;
-    private Integer zip;
+    private String zip;
+
+
+    @OneToMany
+    @JoinColumn(name = "publisher_id")
+    private Set<Book> books = new HashSet<>();
+
 
     public Publisher() {
 
     }
 
-    public Publisher(String addressLine1, String city, String state, Integer zip) {
+    public Publisher(Long id, String name, String addressLine1, String city, String state, String zip, Set<Book> books) {
+        this.id = id;
+        this.name = name;
         this.addressLine1 = addressLine1;
         this.city = city;
         this.state = state;
         this.zip = zip;
+        this.books = books;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     public String getAddressLine1() {
@@ -52,13 +89,6 @@ public class Publisher {
         this.state = state;
     }
 
-    public Integer getZip() {
-        return zip;
-    }
-
-    public void setZip(Integer zip) {
-        this.zip = zip;
-    }
 
     @Override
     public boolean equals(Object o) {
